@@ -12,6 +12,8 @@
 		57301E892CDE48B00057889E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57301E882CDE48B00057889E /* ViewController.swift */; };
 		57301E8E2CDE48B20057889E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57301E8D2CDE48B20057889E /* Assets.xcassets */; };
 		57301E912CDE48B20057889E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57301E8F2CDE48B20057889E /* LaunchScreen.storyboard */; };
+		576257602CDE51E40034AE7B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5762575F2CDE51E40034AE7B /* TabBarViewController.swift */; };
+		576257642CDE52740034AE7B /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576257632CDE52740034AE7B /* FavoritesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		57301E8D2CDE48B20057889E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57301E902CDE48B20057889E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57301E922CDE48B20057889E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5762575F2CDE51E40034AE7B /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		576257632CDE52740034AE7B /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 		57301E832CDE48B00057889E /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
+				576257622CDE52480034AE7B /* Favorites */,
+				576257612CDE51F10034AE7B /* TabBar */,
 				57301E842CDE48B00057889E /* AppDelegate.swift */,
 				57301E862CDE48B00057889E /* SceneDelegate.swift */,
 				57301E882CDE48B00057889E /* ViewController.swift */,
@@ -62,6 +68,22 @@
 				57301E922CDE48B20057889E /* Info.plist */,
 			);
 			path = MovieApp;
+			sourceTree = "<group>";
+		};
+		576257612CDE51F10034AE7B /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				5762575F2CDE51E40034AE7B /* TabBarViewController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		576257622CDE52480034AE7B /* Favorites */ = {
+			isa = PBXGroup;
+			children = (
+				576257632CDE52740034AE7B /* FavoritesViewController.swift */,
+			);
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,8 +156,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				576257602CDE51E40034AE7B /* TabBarViewController.swift in Sources */,
 				57301E892CDE48B00057889E /* ViewController.swift in Sources */,
 				57301E852CDE48B00057889E /* AppDelegate.swift in Sources */,
+				576257642CDE52740034AE7B /* FavoritesViewController.swift in Sources */,
 				57301E872CDE48B00057889E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
