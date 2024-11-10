@@ -29,7 +29,6 @@ class MovieService {
                 completion(.failure(NSError()))
                 return
             }
-            print(String(data: data, encoding: .utf8))
             
             do {
                 let movieResponse = try JSONDecoder().decode(MovieResponse.self, from: data)

@@ -19,7 +19,7 @@ class FavoriteMovieViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -27,6 +27,10 @@ class FavoriteMovieViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         loadFavoriteMovies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        collectionView.reloadData()
     }
     
     private func setupView() {
@@ -60,6 +64,7 @@ extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteMovieCell", for: indexPath) as! MovieCell
+        cell.delegate = self
         let movie = favoriteMovies[indexPath.row]
         cell.configure(with: movie)
         return cell
@@ -69,5 +74,11 @@ extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionVie
         let movie = favoriteMovies[indexPath.row]
         let detailViewController = MovieDetailViewController(movie: movie)
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension FavoriteMovieViewController: MovieCellProtocol {
+    func didUnfavoriteMovie() {
+        loadFavoriteMovies()
     }
 }

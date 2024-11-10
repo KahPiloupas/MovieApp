@@ -10,7 +10,7 @@ import Foundation
 struct Movie: Codable, Equatable {
     let adult: Bool
     let backdropPath: String
-    let genreIDS: [Int]
+    let genreIds: [Int]
     let id: Int
     let originalLanguage: OriginalLanguage
     let originalTitle, overview: String
@@ -23,7 +23,7 @@ struct Movie: Codable, Equatable {
     enum CodingKeys: String, CodingKey {
         case adult
         case backdropPath = "backdrop_path"
-        case genreIDS = "genre_ids"
+        case genreIds = "genre_ids"
         case id
         case originalLanguage = "original_language"
         case originalTitle = "original_title"

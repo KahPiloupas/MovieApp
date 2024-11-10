@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol MovieCellProtocol: AnyObject {
+    func didUnfavoriteMovie()
+}
+
 class MovieCell: UICollectionViewCell {
     
     private let movieImage: UIImageView = {
@@ -41,8 +45,11 @@ class MovieCell: UICollectionViewCell {
         PersistenceManager.toggleFavorite(movie: movie)
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
         favoriteButton.setImage(UIImage(systemName: isFavorite ? "heart.fill" : "suit.heart"), for: .normal)
+        
+        delegate?.didUnfavoriteMovie() //esse delegate avisa para a tela de Favoritos que é necessário atualizar a lista de filmes
     }
-    
+
+    weak var delegate: MovieCellProtocol?
     private var movie: Movie?
     
     override init(frame: CGRect) {

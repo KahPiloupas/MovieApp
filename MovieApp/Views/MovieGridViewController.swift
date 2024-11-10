@@ -22,7 +22,7 @@ class MovieGridViewController: UIViewController {
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -41,8 +41,12 @@ class MovieGridViewController: UIViewController {
         fetchMovies()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        collectionView.reloadData()
+    }
+    
     private func setupView() {
-        view.backgroundColor = .blue
+        view.backgroundColor = .white
         
         //NavigationBar
         title = "Movies"
@@ -73,34 +77,31 @@ class MovieGridViewController: UIViewController {
     private func fetchMovies() {
         isLoading = true
         
-        MovieService.shared.fetchPopularMovies { result in
-            self.isLoading = false
+        MovieService.shared.fetchPopularMovies { [weak self] result in
+            self?.isLoading = false
             switch result {
             case .success(let movies):
-                self.movies = movies
-                print(movies)
-                self.filteredMovies = movies
+                self?.movies = movies
+                self?.filteredMovies = movies
             case .failure(let error):
-                self.error = error.localizedDescription
-                print(error)
+                self?.error = error.localizedDescription
             }
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
             }
         }
     }
-    //private var movies2: [Movie] = [Movie(id: 35, title: "Thor", overview: "Bom", posterPath: "asdfasdf", genres: [])]
 }
 
 extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return filteredMovies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        let movie = movies[indexPath.row]
+        let movie = filteredMovies[indexPath.row]
         cell.configure(with: movie)
         return cell
     }

@@ -8,9 +8,9 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    
     //O AppDelegate é responsável pelo ciclo de vida e configuração do app.
     
     //O SceneDelegate é responsável pelo o que é mostrado na tela, e com ele nós podemos manipular e gerenciar a forma como o app é exibido.
@@ -36,27 +36,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //TabBarController como a controladora das telas
         tabBarController.viewControllers = [movieGridViewController,favoriteMovieViewController]
         
+        //Customização da TabBar
+        customizeTabBarAppearance(tabBarController)
+        
         //Configuração padrao da janela inicial
         window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
     }
-
+    
+    // Função para customizar a TabBar
+    func customizeTabBarAppearance(_ tabBarController: UITabBarController) {
+        tabBarController.tabBar.tintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .lightGray
+        tabBarController.tabBar.layer.borderWidth = 0.5
+        tabBarController.tabBar.layer.borderColor = UIColor.lightGray.cgColor
+        tabBarController.tabBar.backgroundColor = .white
+        tabBarController.tabBar.isTranslucent = false
+    }
+    
     func sceneDidDisconnect(_ scene: UIScene) {
     }
-
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
     }
-
+    
     func sceneWillResignActive(_ scene: UIScene) {
     }
-
+    
     func sceneWillEnterForeground(_ scene: UIScene) {
     }
-
+    
     func sceneDidEnterBackground(_ scene: UIScene) {
     }
-
-
 }
 
