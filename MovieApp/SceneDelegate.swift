@@ -21,11 +21,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-        let vc: ViewController = ViewController()
-        let navVC = UINavigationController(rootViewController: vc)
-        window.rootViewController = navVC
-        window.makeKeyAndVisible()
+        
+        //Criação da TabBar
+        let tabBarController = UITabBarController()
+        
+        //Tela de Filmes Populares
+        let movieGridViewController = MovieGridViewController()
+        movieGridViewController.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(systemName: "list.bullet"), tag: 0)
+        
+        //Tela de Filmes Favoritos
+        let favoriteMovieViewController = FavoriteMovieViewController()
+        favoriteMovieViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "suit.heart"), tag: 1)
+        
+        //TabBarController como a controladora das telas
+        tabBarController.viewControllers = [movieGridViewController,favoriteMovieViewController]
+        
+        //Configuração padrao da janela inicial
+        window.rootViewController = tabBarController
         self.window = window
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
