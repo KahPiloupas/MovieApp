@@ -30,7 +30,7 @@ class FavoriteMovieViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        collectionView.reloadData()
+        loadFavoriteMovies()
     }
     
     private func setupView() {

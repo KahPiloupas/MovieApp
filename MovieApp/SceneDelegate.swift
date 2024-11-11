@@ -27,14 +27,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //Tela de Filmes Populares
         let movieGridViewController = MovieGridViewController()
-        movieGridViewController.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(systemName: "list.bullet"), tag: 0)
+        let movieGridNavController = UINavigationController(rootViewController: movieGridViewController)
         
         //Tela de Filmes Favoritos
         let favoriteMovieViewController = FavoriteMovieViewController()
-        favoriteMovieViewController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "suit.heart"), tag: 1)
+        let favoriteMovieNavController = UINavigationController(rootViewController: favoriteMovieViewController)
+        
+        //Definindo os icones da TabBar
+        movieGridNavController.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(systemName: "list.bullet"), tag: 0)
+        favoriteMovieNavController.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "suit.heart"), tag: 1)
         
         //TabBarController como a controladora das telas
-        tabBarController.viewControllers = [movieGridViewController,favoriteMovieViewController]
+        tabBarController.viewControllers = [movieGridNavController,favoriteMovieNavController]
         
         //Customização da TabBar
         customizeTabBarAppearance(tabBarController)

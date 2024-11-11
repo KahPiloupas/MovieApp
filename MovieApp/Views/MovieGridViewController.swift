@@ -41,9 +41,9 @@ class MovieGridViewController: UIViewController {
         fetchMovies()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        collectionView.reloadData()
-    }
+        override func viewWillAppear(_ animated: Bool) {
+            collectionView.reloadData()
+        }
     
     private func setupView() {
         view.backgroundColor = .white
