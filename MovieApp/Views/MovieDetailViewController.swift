@@ -59,6 +59,7 @@ class MovieDetailViewController: UIViewController {
     private let genresLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         return label
     }()
     

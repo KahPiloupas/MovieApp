@@ -54,6 +54,10 @@ class MovieCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.gray.cgColor
+        contentView.layer.cornerRadius = 8
+        contentView.backgroundColor = .lightGray
         setupView()
     }
     
@@ -70,7 +74,7 @@ class MovieCell: UICollectionViewCell {
             movieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             movieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             movieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            movieImage.heightAnchor.constraint(equalToConstant: 150),
+            movieImage.heightAnchor.constraint(equalToConstant: 200),
             
             titleLabel.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -86,7 +90,7 @@ class MovieCell: UICollectionViewCell {
         self.movie = movie
         titleLabel.text = movie.title
         if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") {
-            movieImage.loadImage(from: imageUrl)
+            movieImage.loadImageFromURL(imageUrl)
         }
         
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
