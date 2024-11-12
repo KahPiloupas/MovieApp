@@ -57,7 +57,6 @@ class MovieCell: UICollectionViewCell {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.gray.cgColor
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .lightGray
         setupView()
     }
     
@@ -95,17 +94,5 @@ class MovieCell: UICollectionViewCell {
         
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
         favoriteButton.setImage(UIImage(systemName: isFavorite ? "heart.fill" : "suit.heart"), for: .normal)
-    }
-}
-
-extension UIImageView {
-    func loadImage(from url: URL) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
-                }
-            }
-        }
     }
 }

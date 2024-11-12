@@ -13,7 +13,7 @@ class FavoriteMovieViewController: UIViewController {
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 250)
+        layout.itemSize = CGSize(width: 150, height: 270)
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)

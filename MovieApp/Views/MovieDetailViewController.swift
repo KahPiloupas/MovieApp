@@ -135,7 +135,7 @@ class MovieDetailViewController: UIViewController {
     
     private func configure() {
         if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") {
-            posterImage.loadImage(from: imageUrl)
+            posterImage.loadImageFromURL(imageUrl)
         }
         titleLabel.text = movie.title
         overviewLabel.text = movie.overview
