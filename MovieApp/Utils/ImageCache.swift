@@ -15,7 +15,7 @@ class ImageCache {
     private let cacheQueue = DispatchQueue(label: "ImageCache.ioQueue")//fila de execução de forma assincrona
 
     private init() {
-        cache.countLimit = 100
+        cache.countLimit = 1000
     }
 
 //Limpo todas as imagens armazenadas no cache conforme for ocorrendo a excecução com o Dispatch
@@ -41,5 +41,4 @@ class ImageCache {
     func getImage(forKey key: String) -> UIImage? {
         return cache.object(forKey: key as NSString)
     }
-
 }

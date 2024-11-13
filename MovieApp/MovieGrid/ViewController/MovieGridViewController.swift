@@ -44,7 +44,13 @@ class MovieGridViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         viewModel.setDelegate(self)
-        viewModel.fetchMovies()
+        Task {
+            await viewModel.fetchMoreMovies()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        collectionView.reloadData()
     }
     
     private func setupView() {
@@ -106,7 +112,9 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
             let movie = viewModel.movie(at: indexPath.row)
             cell.configure(with: movie)
             if indexPath.row == viewModel.allMovies - 1 {
-                viewModel.fetchMoreMovies()
+                Task {
+                    await viewModel.fetchMoreMovies()
+                }
             }
             return cell
             

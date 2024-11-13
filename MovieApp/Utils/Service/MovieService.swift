@@ -18,35 +18,32 @@ class MovieService {
     private init() {}
     
 //Busca os filmes populares na requisição
-    func fetchMovies(completion: @escaping (Result<MovieResponse, NetworkError>) -> Void) {
+    func fetchMovies() async -> Result<MovieResponse,NetworkError> {
         
         let url = "\(baseURL)?api_key=\(apiKey)&page=1"
-        //Aqui realizo a requisição
-        service.request(url) { (result: Result<MovieResponse, NetworkError>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let success):
-                    completion(.success(success))
-                case .failure(let failure):
-                    completion(.failure(failure))
-                }
-            }
+        
+        do {
+            let result: MovieResponse = try await
+            service.request(url)
+            return .success(result)
+        } catch let error as NetworkError {
+            return .failure(error)
+        } catch {
+            return .failure(.networkError(error: error))
         }
     }
     
 //Busca por mais filmes pra preencher a collectionView conforme o numero de paginas da API
-    func fetchMoreMovies(newPage: Int, completion: @escaping (Result<MovieResponse, NetworkError>) -> Void) {
-       
-        let url = "\(baseURL)?api_key=\(apiKey)&page=\(newPage)"
-        service.request(url) { (result: Result<MovieResponse, NetworkError>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let success):
-                    completion(.success(success))
-                case .failure(let failure):
-                    completion(.failure(failure))
-                }
-            }
+    func fetchMoreMovies(page: Int) async -> Result<MovieResponse, NetworkError> {
+        let url = "\(baseURL)?api_key=\(apiKey)&page=\(page)"
+        
+        do {
+            let result: MovieResponse = try await service.request(url)
+            return .success(result)
+        } catch let error as NetworkError {
+            return .failure(error)
+        } catch {
+            return .failure(.networkError(error: error))
         }
     }
 }

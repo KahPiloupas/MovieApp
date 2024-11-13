@@ -51,43 +51,39 @@ class MovieGridViewModel {
         self.delegate = delegate
     }
     
-//Carrega os filmes iniciais
-    func fetchMovies() {
-        self.delegate?.showLoading() //Notifica a View que vai exibir um loading enquanto os filmes sao carregados
+    //Carrega os filmes iniciais
+    func fetchMovies() async {
+        await MainActor.run { delegate?.showLoading() } //Notifica a View que vai exibir um loading enquanto os filmes sao carregados
         
         //Requisição para buscar a lista dos filmes
-        MovieService.shared.fetchMovies { [weak self] (result: Result<MovieResponse, NetworkError>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.movies = response.results
-                self.filteredMovies = self.movies
-                self.page = (response.page) + 1
-                self.state = .showingMovies
-                self.delegate?.reloadData()
-            case .failure(_):
-                self.state = .error
-                self.delegate?.reloadData()
-            }
+        let result = await MovieService.shared.fetchMovies()
+        switch result {
+        case .success(let response):
+            self.movies = response.results
+            self.filteredMovies = self.movies
+            self.page = response.page + 1
+            self.state = .showingMovies
+            await MainActor.run { delegate?.reloadData() }
+        case .failure:
+            self.state = .error
+            await MainActor.run { delegate?.reloadData() }
         }
     }
-
-//Carrega mais filmes enquanto o scroll vai rolando pra baixo
-    func fetchMoreMovies() {
-        MovieService.shared.fetchMoreMovies(newPage: page) { [weak self] (result: Result<MovieResponse, NetworkError>) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.movies.append(contentsOf: response.results)
-                self.filteredMovies = self.movies
-                self.page += 1
-                self.state = .showingMovies
-                self.delegate?.reloadData()
-            case .failure(let error):
-                print(error)
-                self.state = .error
-                self.delegate?.reloadData()
-            }
+    
+    //Carrega mais filmes enquanto o scroll vai rolando pra baixo
+    func fetchMoreMovies() async {
+        let result = await MovieService.shared.fetchMoreMovies(page: page)
+        switch result {
+        case .success(let response):
+            self.movies.append(contentsOf: response.results)
+            self.filteredMovies = self.movies
+            self.page += 1
+            self.state = .showingMovies
+            await MainActor.run { delegate?.reloadData() }
+        case .failure(let error):
+            print(error)
+            self.state = .error
+            await MainActor.run { delegate?.reloadData() }
         }
     }
     
@@ -95,10 +91,12 @@ class MovieGridViewModel {
         searchText ?? ""
     }
     
-//Filtra o filme de acordo com o que é escrito na busca
+    //Filtra o filme de acordo com o que é escrito na busca
     func filterMovies(by searchText: String) {
         if searchText.isEmpty {
-            fetchMovies()
+            Task {
+                await fetchMovies()
+            }
         } else {
             self.searchText = searchText
             filteredMovies = movies.filter {
@@ -114,7 +112,7 @@ class MovieGridViewModel {
         delegate?.reloadData()
     }
     
-//Numero de filmes que sao mostrados na View
+    //Numero de filmes que sao mostrados na View
     func numberOfItems() -> Int {
         switch state {
         case .noMoviesFound, .error:
