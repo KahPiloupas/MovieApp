@@ -7,10 +7,12 @@
 
 import UIKit
 
+//Protocolo para desfavoritar um filme
 protocol MovieCellProtocol: AnyObject {
     func didUnfavoriteMovie()
 }
 
+//Aqui eu crio a celula
 class MovieCell: UICollectionViewCell {
     
     private let movieImage: UIImageView = {
@@ -57,6 +59,7 @@ class MovieCell: UICollectionViewCell {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.gray.cgColor
         contentView.layer.cornerRadius = 8
+        contentView.backgroundColor = .lightGray
         setupView()
     }
     
@@ -73,7 +76,7 @@ class MovieCell: UICollectionViewCell {
             movieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             movieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             movieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            movieImage.heightAnchor.constraint(equalToConstant: 200),
+            movieImage.heightAnchor.constraint(equalToConstant: 220),
             
             titleLabel.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -84,11 +87,12 @@ class MovieCell: UICollectionViewCell {
             favoriteButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-    
+
+//Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem
     func configure(with movie: Movie) {
         self.movie = movie
         titleLabel.text = movie.title
-        if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") {
+        if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath ?? "")") {
             movieImage.loadImageFromURL(imageUrl)
         }
         

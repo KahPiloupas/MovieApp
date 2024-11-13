@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 extension UIImageView {
-    //Carregando Imagens
+    
+    //Carregando Imagens assincrono
     func loadImageFromURL(_ url: URL, placeholder: UIImage? = nil, errorImage: UIImage? = nil, completionHandler: ((Result<UIImage, Error>) -> Void)? = nil) {
         self.image = placeholder
         

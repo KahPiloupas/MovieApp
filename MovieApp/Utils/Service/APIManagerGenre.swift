@@ -14,7 +14,7 @@ struct APIManagerGenre {
         
         guard let url = URL(string: urlString) else { return }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in //executa a task de requisiçao assincrona
             if let data = data {
                 do {
                     let decoder = JSONDecoder()

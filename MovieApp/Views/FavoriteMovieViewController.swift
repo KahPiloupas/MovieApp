@@ -7,13 +7,14 @@
 
 import UIKit
 
+//Monto minha view de Favoritos
 class FavoriteMovieViewController: UIViewController {
     
     private var favoriteMovies: [Movie] = []
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 270)
+        layout.itemSize = CGSize(width: 150, height: 300)
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
@@ -50,6 +51,7 @@ class FavoriteMovieViewController: UIViewController {
         ])
     }
     
+//Carrega os filmes favoritos e depois atualiza a Collection
     private func loadFavoriteMovies() {
         favoriteMovies = PersistenceManager.loadFavoriteMovies()
         collectionView.reloadData()
@@ -77,6 +79,7 @@ extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionVie
     }
 }
 
+//Caso um filme seja removido dos favoritos
 extension FavoriteMovieViewController: MovieCellProtocol {
     func didUnfavoriteMovie() {
         loadFavoriteMovies()
