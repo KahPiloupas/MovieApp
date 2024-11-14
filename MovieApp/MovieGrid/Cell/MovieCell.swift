@@ -7,6 +7,12 @@
 
 import UIKit
 
+//Protocolo para desfavoritar um filme
+protocol MovieCellProtocol: AnyObject {
+    func didUnfavoriteMovie()
+}
+
+//Aqui eu crio a celula
 class MovieCell: UICollectionViewCell {
     
     private let movieImage: UIImageView = {
@@ -22,7 +28,8 @@ class MovieCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.textColor = .black
         return label
     }()
@@ -41,12 +48,19 @@ class MovieCell: UICollectionViewCell {
         PersistenceManager.toggleFavorite(movie: movie)
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
         favoriteButton.setImage(UIImage(systemName: isFavorite ? "heart.fill" : "suit.heart"), for: .normal)
+        
+        delegate?.didUnfavoriteMovie() //esse delegate avisa para a tela de Favoritos que é necessário atualizar a lista de filmes
     }
-    
+
+    weak var delegate: MovieCellProtocol?
     private var movie: Movie?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.gray.cgColor
+        contentView.layer.cornerRadius = 8
+        contentView.backgroundColor = .lightGray
         setupView()
     }
     
@@ -63,7 +77,7 @@ class MovieCell: UICollectionViewCell {
             movieImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             movieImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             movieImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            movieImage.heightAnchor.constraint(equalToConstant: 150),
+            movieImage.heightAnchor.constraint(equalToConstant: 220),
             
             titleLabel.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -74,27 +88,16 @@ class MovieCell: UICollectionViewCell {
             favoriteButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
         ])
     }
-    
+
+//Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem
     func configure(with movie: Movie) {
         self.movie = movie
         titleLabel.text = movie.title
-        if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") {
-            movieImage.loadImage(from: imageUrl)
+        if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath ?? "")") {
+            movieImage.loadImageFromURL(imageUrl)
         }
         
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
         favoriteButton.setImage(UIImage(systemName: isFavorite ? "heart.fill" : "suit.heart"), for: .normal)
-    }
-}
-
-extension UIImageView {
-    func loadImage(from url: URL) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async {
-                    self.image = UIImage(data: data)
-                }
-            }
-        }
     }
 }

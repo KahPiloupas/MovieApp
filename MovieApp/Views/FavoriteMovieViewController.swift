@@ -7,25 +7,30 @@
 
 import UIKit
 
+//Monto minha view de Favoritos
 class FavoriteMovieViewController: UIViewController {
     
     private var favoriteMovies: [Movie] = []
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 250)
+        layout.itemSize = CGSize(width: 150, height: 300)
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .yellow
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        loadFavoriteMovies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         loadFavoriteMovies()
     }
     
@@ -46,6 +51,7 @@ class FavoriteMovieViewController: UIViewController {
         ])
     }
     
+//Carrega os filmes favoritos e depois atualiza a Collection
     private func loadFavoriteMovies() {
         favoriteMovies = PersistenceManager.loadFavoriteMovies()
         collectionView.reloadData()
@@ -60,6 +66,7 @@ extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteMovieCell", for: indexPath) as! MovieCell
+        cell.delegate = self
         let movie = favoriteMovies[indexPath.row]
         cell.configure(with: movie)
         return cell
@@ -69,5 +76,12 @@ extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionVie
         let movie = favoriteMovies[indexPath.row]
         let detailViewController = MovieDetailViewController(movie: movie)
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+//Caso um filme seja removido dos favoritos
+extension FavoriteMovieViewController: MovieCellProtocol {
+    func didUnfavoriteMovie() {
+        loadFavoriteMovies()
     }
 }
