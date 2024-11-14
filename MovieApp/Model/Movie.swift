@@ -8,7 +8,7 @@
 import Foundation
 
 struct Movie: Codable {
-//Propriedades do que eu quero na struct
+    //Propriedades do que eu quero na struct
     var backdropPath: String?
     var genreIds: [Int]?
     var id: Int?

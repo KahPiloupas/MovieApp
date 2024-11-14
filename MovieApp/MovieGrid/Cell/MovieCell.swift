@@ -28,7 +28,8 @@ class MovieCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.textColor = .black
         return label
     }()

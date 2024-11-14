@@ -74,12 +74,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		5782D1962CE1148200DF5501 /* Models */ = {
+		5782D1962CE1148200DF5501 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				5782D19F2CE127AE00DF5501 /* Movie.swift */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5782D1972CE1148C00DF5501 /* Utils */ = {
@@ -168,7 +168,7 @@
 		5785B8E72CDFE33900ED2F6E /* MovieApp */ = {
 			isa = PBXGroup;
 			children = (
-				5782D1962CE1148200DF5501 /* Models */,
+				5782D1962CE1148200DF5501 /* Model */,
 				5782D1B92CE38D2F00DF5501 /* MovieGrid */,
 				5782D1982CE1149C00DF5501 /* Resources */,
 				5782D1972CE1148C00DF5501 /* Utils */,
