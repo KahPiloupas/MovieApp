@@ -133,7 +133,7 @@ class MovieDetailViewController: UIViewController {
         ])
     }
     
-//Configura o que a tela vai mostrar com base no que é pedido: imagem, o titulo de filme, sinopse dele e o botao de favoritos
+    //Configura o que a tela vai mostrar com base no que é pedido: imagem, o titulo de filme, sinopse dele e o botao de favoritos
     private func configure() {
         if let imageUrl =  URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath ?? "")") {
             posterImage.loadImageFromURL(imageUrl)
@@ -143,7 +143,7 @@ class MovieDetailViewController: UIViewController {
         updateFavoriteButton()
     }
     
-//Verifica se o filme tá na lista de favoritos
+    //Verifica se o filme tá na lista de favoritos
     private func updateFavoriteButton() {
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
         let title = isFavorite ? "Unfavorite" : "Favorite"
@@ -155,6 +155,7 @@ class MovieDetailViewController: UIViewController {
     @objc private func toggleFavorite() {
         if PersistenceManager.isFavorite(movie: movie) {
             PersistenceManager.removeFavorite(movie: movie)
+            navigationController?.popViewController(animated: true)
         } else {
             PersistenceManager.addFavorite(movie: movie)
         }
@@ -162,12 +163,22 @@ class MovieDetailViewController: UIViewController {
     }
     
     private func fetchGenres() {
-        //requisição pra buscar os filmes de acordo com seu genero e mapeia os IDs deles
-        APIManagerGenre.fetchGenres { genres in
-            let genreNames = self.movie.genreIds?.compactMap { genreId in
-                return genres.first { $0.id == genreId }?.name
+        //requisição pra buscar os filmes de acordo com seu genero e mapeia os IDs e nomes do genero deles
+        APIManagerGenre.fetchGenres { result in
+            switch result {
+            case .success(let genres):
+                let genreNames = self.movie.genreIds?.compactMap { genreId in
+                    return genres.first { $0.id == genreId }?.name
+                }
+                DispatchQueue.main.async {
+                    self.genresLabel.text = "Genres: \(genreNames?.joined(separator: ", ") ?? "")."
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.genresLabel.text = "Genres: undefined."
+                }
+                
             }
-            self.genresLabel.text = "Genres: \(genreNames?.joined(separator: ", ") ?? "")"
         }
     }
 }

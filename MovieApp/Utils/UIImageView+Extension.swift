@@ -24,13 +24,19 @@ extension UIImageView {
         //Baixa e salva a imagem no cache
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
+                
                 guard error == nil, let data = data, let image = UIImage(data: data) else {
                     self.image = UIImage(named: "emptyImage")
                     completionHandler?(.failure(error ?? ImageLoadingError.unknownError))
-                    return}
+                    return
+                }
+                
                 ImageCache.shared.setImage(image: image, forKey: url.absoluteString)
                 self.image = image
-                completionHandler?(.success(image))}}.resume()}
+                completionHandler?(.success(image))
+            }
+        }.resume()
+    }
 }
 
 // Enum que representa os possíveis erros que podem ocorrer ao carregar uma imagem

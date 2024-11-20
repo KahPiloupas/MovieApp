@@ -8,7 +8,7 @@
 import Foundation
 
 struct APIManagerGenre {
-    static func fetchGenres(completion: @escaping ([Genre]) -> Void) {
+    static func fetchGenres(completion: @escaping (Result<[Genre], Error>) -> Void) {
         //URL para buscar os gêneros
         let urlString = "https://api.themoviedb.org/3/genre/movie/list?api_key=92e402ee413d95bf4784206801d2cb1e&language=en-US"
         
@@ -20,10 +20,10 @@ struct APIManagerGenre {
                     let decoder = JSONDecoder()
                     let genreResponse = try decoder.decode(GenreResponse.self, from: data)
                     DispatchQueue.main.async {
-                        completion(genreResponse.genres)
+                        completion(.success(genreResponse.genres))
                     }
                 } catch {
-                    print("Error decoding genres: \(error)")
+                    completion(.failure(error))
                 }
             }
         }.resume()

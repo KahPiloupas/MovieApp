@@ -24,6 +24,14 @@ class FavoriteMovieViewController: UIViewController {
         return collectionView
     }()
     
+    var movieCellWidth: CGFloat {
+        if UIDevice.current.orientation.isPortrait {
+            return ( collectionView.frame.width - 70 )/2
+        } else {
+            return ( collectionView.frame.width - 70 )/3
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -34,20 +42,27 @@ class FavoriteMovieViewController: UIViewController {
         loadFavoriteMovies()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.reloadData()
+    }
+    
     private func setupView() {
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         title = "Favorites"
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: "FavoriteMovieCell")
+        collectionView.register(NoFavoritesMoviesCollectionViewCell.self, forCellWithReuseIdentifier: "NoFavoritesMoviesCollectionViewCell")
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -58,24 +73,43 @@ class FavoriteMovieViewController: UIViewController {
     }
 }
 
-extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension FavoriteMovieViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoriteMovies.count
+        if favoriteMovies.count > 0 {
+            return favoriteMovies.count
+        } else {
+            return 1
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteMovieCell", for: indexPath) as! MovieCell
-        cell.delegate = self
-        let movie = favoriteMovies[indexPath.row]
-        cell.configure(with: movie)
-        return cell
+        if favoriteMovies.count > 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteMovieCell", for: indexPath) as! MovieCell
+            cell.delegate = self
+            let movie = favoriteMovies[indexPath.row]
+            cell.configure(with: movie)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoFavoritesMoviesCollectionViewCell", for: indexPath) as! NoFavoritesMoviesCollectionViewCell
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = favoriteMovies[indexPath.row]
         let detailViewController = MovieDetailViewController(movie: movie)
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if favoriteMovies.count > 0 {
+            return CGSize(width: movieCellWidth, height: 300)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        }
+        
     }
 }
 

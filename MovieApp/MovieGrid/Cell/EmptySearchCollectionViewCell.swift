@@ -16,7 +16,7 @@ class EmptySearchCollectionViewCell: UICollectionViewCell {
         image.layer.cornerRadius = 8
         image.clipsToBounds = true
         image.image = UIImage(systemName: "magnifyingglass")
-        image.tintColor = .black
+        image.tintColor = .gray
         return image
     }()
     
@@ -41,7 +41,7 @@ class EmptySearchCollectionViewCell: UICollectionViewCell {
     
 //Caso o estado da ViewModel tenha esse filme, ela exibe, caso nao, exibe essa mensagem
     func setupCell(filmeName: String) {
-        resultLabel.text = "Não foi encontrado \"\(filmeName)\" na busca!!!"
+        resultLabel.text = "Not found \"\(filmeName)\" in search!"
     }
     
     private func setupView() {
@@ -49,15 +49,17 @@ class EmptySearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(resultLabel)
         
         NSLayoutConstraint.activate([
-            searchImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 100),
             searchImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            searchImage.heightAnchor.constraint(equalToConstant: 120),
-            searchImage.widthAnchor.constraint(equalToConstant: 120),
+            searchImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -50),
+            searchImage.heightAnchor.constraint(equalToConstant: 150),
+            searchImage.widthAnchor.constraint(equalToConstant: 150),
             
             resultLabel.topAnchor.constraint(equalTo: searchImage.bottomAnchor, constant: 12),
+            resultLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            resultLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             resultLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             resultLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            resultLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            resultLabel.widthAnchor.constraint(equalToConstant: 300)
         ])
     }
 }
