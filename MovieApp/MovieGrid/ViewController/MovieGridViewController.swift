@@ -153,7 +153,7 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
             return CGSize(width: 0, height: 0)
             
         case .showingMovies:
-            return CGSize(width: movieCellWidth, height: 300)
+            return CGSize(width: movieCellWidth, height: 270)
             
         case .noMoviesFound:
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)

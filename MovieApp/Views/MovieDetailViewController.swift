@@ -37,6 +37,7 @@ class MovieDetailViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.numberOfLines = 3
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -52,6 +53,7 @@ class MovieDetailViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Favorite", for: .normal)
+        button.tintColor = .red
         button.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         return button
     }()
@@ -111,8 +113,8 @@ class MovieDetailViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             posterImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            posterImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            posterImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            posterImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            posterImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             posterImage.heightAnchor.constraint(equalToConstant: 500),
             
             titleLabel.topAnchor.constraint(equalTo: posterImage.bottomAnchor, constant: 20),
