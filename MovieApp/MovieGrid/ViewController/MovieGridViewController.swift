@@ -40,12 +40,20 @@ class MovieGridViewController: UIViewController {
         return loading
     }()
     
+    var movieCellWidth: CGFloat {
+        if UIDevice.current.orientation.isPortrait {
+            return ( collectionView.frame.width - 70 )/2
+        } else {
+            return ( collectionView.frame.width - 70 )/3
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         viewModel.setDelegate(self)
         Task {
-            await viewModel.fetchMoreMovies()
+            await viewModel.fetchMovies(page: 1)
         }
     }
     
@@ -53,23 +61,28 @@ class MovieGridViewController: UIViewController {
         collectionView.reloadData()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.reloadData()
+    }
+    
     private func setupView() {
         view.backgroundColor = .white
         loadView.startAnimating()
         
-        //NavigationBar
+//NavigationBar
         title = "Movies"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        //SearchBar
+//SearchBar
         view.addSubview(searchBar)
         searchBar.delegate = self
         
-        //CollectionView
+//CollectionView
         view.addSubview(collectionView)
         view.addSubview(loadView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
         collectionView.register(EmptySearchCollectionViewCell.self, forCellWithReuseIdentifier: "EmptySearchCollectionViewCell")
         collectionView.register(ErrorCollectionViewCell.self, forCellWithReuseIdentifier: "ErrorCollectionViewCell")
@@ -85,9 +98,9 @@ class MovieGridViewController: UIViewController {
             loadView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
@@ -95,12 +108,12 @@ class MovieGridViewController: UIViewController {
 //Delegates da CollectionView
 extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    //Retorna o numero de iten da collection
+//Retorna o numero de iten da collection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItems()
     }
     
-    //Retorna as celulas de acordo com o estado da ViewModel
+//Retorna as celulas de acordo com o estado da ViewModel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch viewModel.getViewModelState {
             
@@ -111,11 +124,6 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCell
             let movie = viewModel.movie(at: indexPath.row)
             cell.configure(with: movie)
-            if indexPath.row == viewModel.allMovies - 1 {
-                Task {
-                    await viewModel.fetchMoreMovies()
-                }
-            }
             return cell
             
         case .noMoviesFound:
@@ -130,23 +138,23 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
         }
     }
     
-    //Navega pra DetailViewController pra mostrar o detalhe do filme clicado
+//Navega pra DetailViewController pra mostrar o detalhe do filme clicado
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = viewModel.movie(at: indexPath.row)
         let detailViewController = MovieDetailViewController(movie: movie)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
-    //Tamanho da celula mostrado de acordo com o estado da ViewModel
+//Tamanho da celula mostrado de acordo com o estado da ViewModel
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+        print(CGSize(width: collectionView.frame.width, height: collectionView.frame.height))
         switch viewModel.getViewModelState {
             
         case .none:
             return CGSize(width: 0, height: 0)
             
         case .showingMovies:
-            return CGSize(width: 170, height: 300)
+            return CGSize(width: movieCellWidth, height: 300)
             
         case .noMoviesFound:
             return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
@@ -157,7 +165,7 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
         }
     }
     
-    //Espaçamento entre as células
+//Espaçamento entre as células
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 20, bottom: 0, right: 20)
     }
@@ -171,7 +179,6 @@ extension MovieGridViewController: UISearchBarDelegate {
 }
 
 //Protocolos da ViewModel
-
 extension MovieGridViewController: MovieGridViewModelProtocol {
     func showLoading() {
         loadView.isHidden = false
@@ -186,5 +193,20 @@ extension MovieGridViewController: MovieGridViewModelProtocol {
     func reloadData() {
         collectionView.reloadData()
         loadView.isHidden = true
+    }
+}
+
+extension MovieGridViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let contentHeight = scrollView.contentSize.height
+        let scrollPosition = scrollView.contentOffset.y + scrollView.frame.size.height
+        
+        if contentHeight - scrollPosition <= 100 { // Quando chegar perto do final da lista
+            if !viewModel.isFetchingMoreMovies && searchBar.text == "" {
+                Task {
+                    await viewModel.fetchMoreMovies()
+                }
+            }
+        }
     }
 }

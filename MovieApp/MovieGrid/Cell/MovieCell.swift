@@ -89,7 +89,7 @@ class MovieCell: UICollectionViewCell {
         ])
     }
 
-//Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem
+//Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem)
     func configure(with movie: Movie) {
         self.movie = movie
         titleLabel.text = movie.title
