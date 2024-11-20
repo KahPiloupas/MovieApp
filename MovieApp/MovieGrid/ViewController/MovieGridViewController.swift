@@ -147,7 +147,6 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
     
 //Tamanho da celula mostrado de acordo com o estado da ViewModel
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print(CGSize(width: collectionView.frame.width, height: collectionView.frame.height))
         switch viewModel.getViewModelState {
             
         case .none:
