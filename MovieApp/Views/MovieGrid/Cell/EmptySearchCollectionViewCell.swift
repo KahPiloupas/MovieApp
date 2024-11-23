@@ -39,7 +39,7 @@ class EmptySearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//Caso o estado da ViewModel tenha esse filme, ela exibe, caso nao, exibe essa mensagem
+    //Caso o estado da ViewModel tenha esse filme, ela exibe, caso nao, exibe essa mensagem
     func setupCell(filmeName: String) {
         resultLabel.text = "Not found \"\(filmeName)\" in search!"
     }

@@ -68,6 +68,7 @@
 		5782D1952CE1147500DF5501 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5782D1B92CE38D2F00DF5501 /* MovieGrid */,
 				5782D19B2CE1194300DF5501 /* MovieDetailViewController.swift */,
 				5782D19D2CE11C1D00DF5501 /* FavoriteMovieViewController.swift */,
 			);
@@ -85,10 +86,8 @@
 		5782D1972CE1148C00DF5501 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5782D1B02CE249DF00DF5501 /* ImageCache.swift */,
-				5782D1A52CE128AB00DF5501 /* PersistenceManager.swift */,
-				5782D1B22CE24A2E00DF5501 /* UIImageView+Extension.swift */,
-				5782D1A72CE139E400DF5501 /* Service */,
+				5782D1FA2CF21FCC00DF5501 /* PersistenceManager */,
+				5782D1F92CF21FA800DF5501 /* ImageCache */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -149,6 +148,23 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		5782D1F92CF21FA800DF5501 /* ImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				5782D1B02CE249DF00DF5501 /* ImageCache.swift */,
+				5782D1B22CE24A2E00DF5501 /* UIImageView+Extension.swift */,
+			);
+			path = ImageCache;
+			sourceTree = "<group>";
+		};
+		5782D1FA2CF21FCC00DF5501 /* PersistenceManager */ = {
+			isa = PBXGroup;
+			children = (
+				5782D1A52CE128AB00DF5501 /* PersistenceManager.swift */,
+			);
+			path = PersistenceManager;
+			sourceTree = "<group>";
+		};
 		5785B8DC2CDFE33900ED2F6E = {
 			isa = PBXGroup;
 			children = (
@@ -169,10 +185,10 @@
 			isa = PBXGroup;
 			children = (
 				5782D1962CE1148200DF5501 /* Model */,
-				5782D1B92CE38D2F00DF5501 /* MovieGrid */,
+				5782D1A72CE139E400DF5501 /* Service */,
+				5782D1952CE1147500DF5501 /* Views */,
 				5782D1982CE1149C00DF5501 /* Resources */,
 				5782D1972CE1148C00DF5501 /* Utils */,
-				5782D1952CE1147500DF5501 /* Views */,
 				5785B8E82CDFE33900ED2F6E /* AppDelegate.swift */,
 				5785B8EA2CDFE33900ED2F6E /* SceneDelegate.swift */,
 				5785B8F32CDFE33A00ED2F6E /* LaunchScreen.storyboard */,

@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct APIManagerGenre {
+class APIManagerGenre {
     static func fetchGenres(completion: @escaping (Result<[Genre], Error>) -> Void) {
         //URL para buscar os gêneros
         let urlString = "https://api.themoviedb.org/3/genre/movie/list?api_key=92e402ee413d95bf4784206801d2cb1e&language=en-US"
         
         guard let url = URL(string: urlString) else { return }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in //executa a task de requisiçao assincrona
+        //executa a task de requisiçao assincrona
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
             if let data = data {
                 do {
                     let decoder = JSONDecoder()

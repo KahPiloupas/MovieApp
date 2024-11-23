@@ -66,7 +66,7 @@ class FavoriteMovieViewController: UIViewController {
         ])
     }
     
-//Carrega os filmes favoritos e depois atualiza a Collection
+    //Carrega os filmes favoritos e depois atualiza a Collection
     private func loadFavoriteMovies() {
         favoriteMovies = PersistenceManager.loadFavoriteMovies()
         collectionView.reloadData()

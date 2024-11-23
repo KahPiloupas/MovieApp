@@ -54,10 +54,10 @@ class MovieGridViewModel {
         self.delegate = delegate
     }
     
-//Carrega os filmes iniciais
+    //Carrega os filmes iniciais
     func fetchMovies(page: Int) async {
         await MainActor.run { delegate?.showLoading() } //Notifica a View que vai exibir um loading enquanto os filmes sao carregados
-//Requisição para buscar a lista dos filmes
+        //Requisição para buscar a lista dos filmes
         do {
             let response = try await service.fetchMovies(page: page)
             self.movies.append(contentsOf: response.results)
@@ -71,7 +71,7 @@ class MovieGridViewModel {
         }
     }
     
-//Carrega mais filmes enquanto o scroll vai rolando pra baixo
+    //Carrega mais filmes enquanto o scroll vai rolando pra baixo
     func fetchMoreMovies() async {
         isFetchingMoreMovies = true
         try await fetchMovies(page: self.page)
@@ -82,7 +82,7 @@ class MovieGridViewModel {
         searchText ?? ""
     }
     
-//Filtra o filme de acordo com o que é escrito na busca
+    //Filtra o filme de acordo com o que é escrito na busca
     func filterMovies(by searchText: String) {
         if searchText.isEmpty {
             Task {
@@ -104,7 +104,7 @@ class MovieGridViewModel {
         delegate?.reloadData()
     }
     
-//Numero de filmes que sao mostrados na View
+    //Numero de filmes que sao mostrados na View
     func numberOfItems() -> Int {
         switch state {
         case .noMoviesFound, .error:
