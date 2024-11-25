@@ -27,8 +27,6 @@ class MovieCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.setContentHuggingPriority(.defaultLow, for: .vertical)
-//        label.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.textAlignment = .center
         label.numberOfLines = 4
@@ -39,7 +37,7 @@ class MovieCell: UICollectionViewCell {
     private let favoriteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "unfavorite"), for: .normal)
+        button.setImage(UIImage(named: "heart"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFill
         button.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         return button
@@ -49,11 +47,11 @@ class MovieCell: UICollectionViewCell {
         guard let movie = movie else { return }
         PersistenceManager.toggleFavorite(movie: movie)
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
-        favoriteButton.setImage(UIImage(named: isFavorite ? "favorite" : "unfavorite"), for: .normal)
+        favoriteButton.setImage(UIImage(named: isFavorite ? "heartfill" : "heart"), for: .normal)
         
         delegate?.didUnfavoriteMovie() //esse delegate avisa para a tela de Favoritos que é necessário atualizar a lista de filmes
     }
-
+    
     weak var delegate: MovieCellProtocol?
     private var movie: Movie?
     
@@ -88,12 +86,12 @@ class MovieCell: UICollectionViewCell {
             
             favoriteButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             favoriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            favoriteButton.heightAnchor.constraint(equalToConstant: 28),
-            favoriteButton.widthAnchor.constraint(equalToConstant: 28)
+            favoriteButton.heightAnchor.constraint(equalToConstant: 24),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 24)
         ])
     }
-
-//Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem)
+    
+    //Configuro a celula com as informaçoes do filme recebendo o objeto Movie e as propriedades dele (no caso, titulo e imagem)
     func configure(with movie: Movie) {
         self.movie = movie
         titleLabel.text = movie.title
@@ -102,7 +100,7 @@ class MovieCell: UICollectionViewCell {
         }
         
         let isFavorite = PersistenceManager.isFavorite(movie: movie)
-        favoriteButton.setImage(UIImage(named: isFavorite ? "favorite" : "unfavorite"), for: .normal)
+        favoriteButton.setImage(UIImage(named: isFavorite ? "heartfill" : "heart"), for: .normal)
         favoriteButton.imageView?.contentMode = .scaleAspectFill
     }
 }

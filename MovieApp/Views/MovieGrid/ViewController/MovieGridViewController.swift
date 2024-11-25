@@ -72,15 +72,15 @@ class MovieGridViewController: UIViewController {
         view.backgroundColor = .white
         loadView.startAnimating()
         
-//NavigationBar
+        //NavigationBar
         title = "Movies"
         navigationController?.navigationBar.prefersLargeTitles = true
         
-//SearchBar
+        //SearchBar
         view.addSubview(searchBar)
         searchBar.delegate = self
         
-//CollectionView
+        //CollectionView
         view.addSubview(collectionView)
         view.addSubview(loadView)
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: "MovieCell")
@@ -108,12 +108,12 @@ class MovieGridViewController: UIViewController {
 //Delegates da CollectionView
 extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-//Retorna o numero de iten da collection
+    //Retorna o numero de iten da collection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItems()
     }
     
-//Retorna as celulas de acordo com o estado da ViewModel
+    //Retorna as celulas de acordo com o estado da ViewModel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch viewModel.getViewModelState {
             
@@ -138,14 +138,14 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
         }
     }
     
-//Navega pra DetailViewController pra mostrar o detalhe do filme clicado
+    //Navega pra DetailViewController pra mostrar o detalhe do filme clicado
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let movie = viewModel.movie(at: indexPath.row)
         let detailViewController = MovieDetailViewController(movie: movie)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
-//Tamanho da celula mostrado de acordo com o estado da ViewModel
+    //Tamanho da celula mostrado de acordo com o estado da ViewModel
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch viewModel.getViewModelState {
             
@@ -164,7 +164,7 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
         }
     }
     
-//Espaçamento entre as células
+    //Espaçamento entre as células
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 20, bottom: 0, right: 20)
     }
@@ -174,7 +174,7 @@ extension MovieGridViewController: UICollectionViewDelegate, UICollectionViewDat
 extension MovieGridViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filterMovies(by: searchText)
-   }
+    }
 }
 
 //Protocolos da ViewModel

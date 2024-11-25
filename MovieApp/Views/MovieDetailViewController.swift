@@ -166,20 +166,25 @@ class MovieDetailViewController: UIViewController {
     
     private func fetchGenres() {
         //requisição pra buscar os filmes de acordo com seu genero e mapeia os IDs e nomes do genero deles
-        APIManagerGenre.fetchGenres { result in
+        APIManagerGenre.fetchGenres { [weak self] result in
+            
+            guard let self = self else { return }
+            
+            var genresText: String
+            
             switch result {
-            case .success(let genres):
+            case .success(let allGenresList):
                 let genreNames = self.movie.genreIds?.compactMap { genreId in
-                    return genres.first { $0.id == genreId }?.name
+                    return allGenresList.first { $0.id == genreId }?.name
                 }
-                DispatchQueue.main.async {
-                    self.genresLabel.text = "Genres: \(genreNames?.joined(separator: ", ") ?? "")."
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.genresLabel.text = "Genres: undefined."
-                }
+                genresText = "Genres: \(genreNames?.joined(separator: ", ") ?? "")."
                 
+            case .failure(let error):
+                genresText = "Genres: undefined."
+            }
+            
+            DispatchQueue.main.async {
+                self.genresLabel.text = genresText
             }
         }
     }

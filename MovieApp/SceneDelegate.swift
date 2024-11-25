@@ -75,14 +75,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-//verificar os botoes de voltar da tabBar (Movies e Favorites)
-//extension SceneDelegate: UITabBarControllerDelegate {
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        // Verifica se o viewController é um UINavigationController
-//        if let navController = viewController as? UINavigationController {
-//            // Faz o pop para a raiz (primeira tela da pilha)
-//            navController.popToRootViewController(animated: false)
-//        }
-//    }
-//}
-

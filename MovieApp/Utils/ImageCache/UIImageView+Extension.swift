@@ -11,8 +11,7 @@ import UIKit
 extension UIImageView {
     
     //Carregando Imagens assincrono
-    func loadImageFromURL(_ url: URL, placeholder: UIImage? = nil, errorImage: UIImage? = nil, completionHandler: ((Result<UIImage, Error>) -> Void)? = nil) {
-        self.image = placeholder
+    func loadImageFromURL(_ url: URL, completionHandler: ((Result<UIImage, Error>) -> Void)? = nil) {
         
         //Verifica se baixou a imagem e só mostra
         if let cachedImage = ImageCache.shared.getImage(forKey: url.absoluteString) {
@@ -22,7 +21,10 @@ extension UIImageView {
         }
         
         //Baixa e salva a imagem no cache
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            
+            guard let self = self else { return }
+            
             DispatchQueue.main.async {
                 
                 guard error == nil, let data = data, let image = UIImage(data: data) else {
